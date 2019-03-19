@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image drawing</title>
+        <script type="text/javascript" src="draw.js"></script>
+    </head>
+    <div class ="blurb">
+      <p> <font size = "20">
+	Want to see what your face would look like if we put a black hole in front of it like in the image below?  Upload a selfie and find out!  Also check out our snapchat filter at SNAPCHAT FILTER DETAILS</font>
+      </p>
+    </div>
+
+    <input type="file" />
+
+    <body>
+        <img id="html5" src="testimg.png" />
+    </body>
+</html>
