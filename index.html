@@ -4,7 +4,7 @@
     <center><img id="html5" src="testing_distortion_truecolor.png" width="400"/ align="middle"></center>
     <div class ="blurb">
       <p> <font size = "20">
-	Want to see what your face would look like if we put a black hole in front of it like in the image above?  Upload a selfie and find out!  Also check out our snapchat filter at SNAPCHAT FILTER DETAILS</font>
+	Want to see what your face would look like if we put a black hole in front of it like in the image above?  Choose a file and then hit the "Render Image!" button!</font>
       </p>
     </div>
 
@@ -27,7 +27,7 @@ var imageLoader = document.getElementById('imageLoader');
     imageLoader.addEventListener('change', handleImage, false);
 
 var imageRender = document.getElementById('myBtn');
-    imageRender.addEventListener("click",clickFunc);
+    imageRender.addEventListener("click",renderFunc);
 
 function clickFunc(){
     document.getElementById("demo").innerHTML = "Button working!";
@@ -61,23 +61,29 @@ function handleImage(e){
             canvas.width = img.width; 
             canvas.height = img.height;
             ctx.drawImage(img,0,0);
-            var imgData = ctx.getImageData(0,0,canvas.width, canvas.height);
+        }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);     
+}
+
+
+function renderFunc(){
+    var imgData = ctx.getImageData(0,0,canvas.width, canvas.height);
 	        var newimgData = ctx2.createImageData(imgData);                
-            canvas2.width = img.width;
-            canvas2.height = img.height;
+            //var newimgData = ctx.createImageData(ImgData);
+            //canvas2.width = canvas.width;
+            //canvas2.height = canvas.height;
 
             var radius=3.3;
-            var xhlf = canvas2.width/2;
-            var yhlf = canvas2.height/2;
-            //console.log(newimgData.data.length);
-            //console.log(canvas2.width);
-            //console.log(canvas2.height);
-
+            var xhlf = canvas.width/2;
+            var yhlf = canvas.height/2;
+            
             var i;
             for (i=0;i<newimgData.data.length;i+=4){
                 var truei = Math.floor(i/4);
-                var tmpy = Math.floor(truei / canvas2.width);
-                var tmpx = truei % canvas2.width;
+                var tmpy = Math.floor(truei / canvas.width);
+                var tmpx = truei % canvas.width;
                 var deltax = tmpx-xhlf;
                 var deltay = tmpy-yhlf;
                 var myr2 = deltax*deltax + deltay*deltay;
@@ -111,60 +117,36 @@ function handleImage(e){
                 var newy = Math.round(tmpy - ychange);
                 var newx = Math.round(tmpx - xchange);
 
-                if (newy >= img.height)
-                {newy=img.height-1;
+                if (newy >= canvas.height)
+                {newy=canvas.height-1;
                 }
                 if (newy < 0)
                 {newy=0;
                 }
-                if (newx >= img.width)
-                {newy=img.width-1;
+                if (newx >= canvas.width)
+                {newx=canvas.width-1;
                 }
                 if (newx < 0)
-                {newy=0;
+                {newx=0;
                 }
                 //now need to convert x-y values into flattened array index
-                var newi = 4*(newy*img.width + newx);
+                var newi = 4*(newy*canvas.width + newx);
                 
-
                 //defining our new pixel vals
                 newimgData.data[i]=imgData.data[newi];
                 newimgData.data[i+1]=imgData.data[newi+1];  
                 newimgData.data[i+2]=imgData.data[newi+2];
                 newimgData.data[i+3]=imgData.data[newi+3];
-
                 }
                 else{
                 newimgData.data[i] =0;
                 newimgData.data[i+1]=0;
                 newimgData.data[i+2]=0;  
                 newimgData.data[i+3]=255; 
-                }
-        
 
-                //do remapping here
-                //if (myr>radius){
-                //   newimgData.data[i]=imgData.data[i];
-                //    newimgData.data[i+1]=imgData.data[i+1];
-                //    newimgData.data[i+2]=imgData.data[i+2];
-                //    newimgData.data[i+3]=imgData.data[i+3];
-                //}
-                //else{
-                //    newimgData.data[i]=0;
-                //    newimgData.data[i+1]=0;
-                //    newimgData.data[i+2]=0;
-                //    newimgData.data[i+3]=255;
-                //}
-
-
+}
             }
-
-
-            ctx2.putImageData(newimgData,0,0);
-        }
-        img.src = event.target.result;
-    }
-    reader.readAsDataURL(e.target.files[0]);     
+            ctx.putImageData(newimgData,0,0);
 }
 </script>
 
