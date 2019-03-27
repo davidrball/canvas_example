@@ -16,13 +16,24 @@
 <input type="file" id="imageLoader" name="imageLoader"/>
 <canvas id="imageCanvas"></canvas>
 <canvas id="transformedCanvas"></canvas>
+<p>Choose a file and then click render image! </p>
 
-<button type="button">Render Image!</button>
-
+    
+<button type="button" id="myBtn">Render Image!</button>
+<p id="demo"></p>
 <script>
 
 var imageLoader = document.getElementById('imageLoader');
     imageLoader.addEventListener('change', handleImage, false);
+
+var imageRender = document.getElementById('myBtn');
+    imageRender.addEventListener("click",clickFunc);
+
+function clickFunc(){
+    document.getElementById("demo").innerHTML = "Button working!";
+
+}
+
 
 var canvas = document.getElementById('imageCanvas');
 var ctx = canvas.getContext('2d');
